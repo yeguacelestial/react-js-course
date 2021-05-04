@@ -2,6 +2,7 @@ import React, { Fragment, useState } from 'react'
 import Header from './components/Header'
 import Footer from './components/Footer'
 import Producto from './components/Producto'
+import Carrito from './components/Carrito'
 
 function App() {
   const fecha = new Date().getFullYear()
@@ -14,6 +15,9 @@ function App() {
     {id: 4, nombre: 'Camisa Node.js', precio: 250},
   ])
 
+  // State para carrito de compras
+  const [carrito, agregarProducto] = useState([])
+
   return (
     <Fragment>
       <Header
@@ -25,8 +29,16 @@ function App() {
         <Producto
           key={producto.id}
           producto={producto}
+          productos={productos}
+          carrito={carrito}
+          agregarProducto={agregarProducto}
         />
       ))}
+
+      <Carrito
+        carrito={carrito}
+        agregarProducto={agregarProducto}
+      />
 
       <Footer
         fecha={fecha}
