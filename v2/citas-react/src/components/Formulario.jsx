@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
+import Error from './Error'
 
-const Formulario = () => {
+const Formulario = ({ patients, setPatients }) => {
   const [petName, setPetName] = useState('')
   const [owner, setOwner] = useState('')
   const [email, setEmail] = useState('')
@@ -9,16 +10,45 @@ const Formulario = () => {
 
   const [formError, setFormError] = useState(false)
 
+  const generarId = () => {
+    const random = Math.random().toString(36).substring(2)
+    const dateNow = Date.now().toString()
+
+    return random + dateNow
+  }
+
   const handleSubmit = (e) => {
     e.preventDefault()
 
     // Form validation
     if ([petName, owner, email, date, symptoms].includes('')) {
+      
       console.log('Hay campos vacios')
       setFormError(true)
+    
     } else {
+      
       console.log('Todos los campos estan llenos')
       setFormError(false)
+      
+      // Objeto de paciente
+      const patient = {
+        id: generarId(),
+        petName,
+        owner,
+        email,
+        date,
+        symptoms
+      }
+
+      setPatients([...patients, patient])
+
+      // Reiniciar el formulario
+      setPetName('')
+      setOwner('')
+      setEmail('')
+      setDate('')
+      setSymptoms('')
     }
   }
 
@@ -36,13 +66,9 @@ const Formulario = () => {
         onSubmit={handleSubmit}
       >
         {
-          formError && (
-            <div>
-              <p className="text-white bg-red-800 text-center font-bold uppercase p-3 mb-3 rounded-md">
-                Todos los campos son obligatorios
-              </p>
-            </div>
-          )
+          formError && <Error>
+            Todos los campos son obligatorios
+          </Error>
         }
         <div className="mb-5">
           <label
