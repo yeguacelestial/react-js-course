@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import Error from './Error'
 
-const Formulario = ({ patients, setPatients }) => {
+const Formulario = ({ patients, setPatients, patient }) => {
   const [petName, setPetName] = useState('')
   const [owner, setOwner] = useState('')
   const [email, setEmail] = useState('')
@@ -9,6 +9,16 @@ const Formulario = ({ patients, setPatients }) => {
   const [symptoms, setSymptoms] = useState('')
 
   const [formError, setFormError] = useState(false)
+
+  useEffect(() => {
+    if( Object.keys(patient).length > 0 ) {
+      setPetName(patient.petName)
+      setOwner(patient.owner)
+      setEmail(patient.email)
+      setDate(patient.date)
+      setSymptoms(patient.symptoms)
+    }
+  }, [patient])
 
   const generarId = () => {
     const random = Math.random().toString(36).substring(2)
@@ -22,13 +32,9 @@ const Formulario = ({ patients, setPatients }) => {
 
     // Form validation
     if ([petName, owner, email, date, symptoms].includes('')) {
-      
-      console.log('Hay campos vacios')
       setFormError(true)
     
     } else {
-      
-      console.log('Todos los campos estan llenos')
       setFormError(false)
       
       // Objeto de paciente
@@ -161,7 +167,7 @@ const Formulario = ({ patients, setPatients }) => {
         <input
           type="submit"
           className="bg-indigo-600 w-full p-3 text-white uppercase font-bold hover:bg-indigo-700 cursor-pointer transition-colors"
-          value="Agregar paciente"
+          value={patient.id ? 'Editar paciente' : 'Añadir paciente'}
         />
       </form>
     </div>

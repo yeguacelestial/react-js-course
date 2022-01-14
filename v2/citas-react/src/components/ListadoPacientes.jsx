@@ -1,6 +1,7 @@
+import { useEffect } from "react"
 import Paciente from "./Paciente"
 
-const ListadoPacientes = ({ patients }) => {
+const ListadoPacientes = ({ patients, setPatient }) => {
 
   return (
     <div className="md:w-1/2 lg:w-3/5 h-screen">
@@ -20,6 +21,7 @@ const ListadoPacientes = ({ patients }) => {
               <Paciente
                 key={patient.id}
                 patient={patient}
+                setPatient={setPatient}
               />
             ))}
           </div> 
