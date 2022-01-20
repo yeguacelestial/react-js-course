@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import Error from './Error'
 
-const Formulario = ({ patients, setPatients, patient }) => {
+const Formulario = ({ patients, setPatients, patient, setPatient }) => {
   const [petName, setPetName] = useState('')
   const [owner, setOwner] = useState('')
   const [email, setEmail] = useState('')
@@ -38,8 +38,7 @@ const Formulario = ({ patients, setPatients, patient }) => {
       setFormError(false)
       
       // Objeto de paciente
-      const patient = {
-        id: generarId(),
+      const objectPatient = {
         petName,
         owner,
         email,
@@ -47,7 +46,22 @@ const Formulario = ({ patients, setPatients, patient }) => {
         symptoms
       }
 
-      setPatients([...patients, patient])
+      if (patient.id) {
+        // Editando un registro
+        objectPatient.id = patient.id
+
+        console.log(objectPatient)
+        console.log(patient)
+
+        const updatedPatients = patients.map( patientState => patientState.id === patient.id ? objectPatient : patientState )
+
+        setPatients(updatedPatients)
+        setPatient({})
+      } else {
+        // Nuevo registro
+        objectPatient.id = generarId()
+        setPatients([...patients, objectPatient])
+      }
 
       // Reiniciar el formulario
       setPetName('')
